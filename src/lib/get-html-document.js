@@ -10,7 +10,7 @@ export default async ({ html, css, meta }) => {
   <style>${css || ""}</style>
 </head>
 <body>
-  <header class="bg-blue-600 mb-8">
+  <header class="bg-blue-600 mb-8 print:hidden">
     <nav class="mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
       <div class="w-full py-6 flex items-center justify-between border-b border-blue-500 lg:border-none">
         <div class="flex items-center">
