@@ -1,0 +1,15 @@
+compatibility_date = "2021-11-12"
+name = "beckelman-org"
+type = "javascript"
+workers_dev = true
+
+kv_namespaces = [
+  {binding = "CONTENT", id = "afea8fdb3c2b4ede977cff7cd4ffee4f"},
+]
+
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "modules"
+main = "index.mjs"

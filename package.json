@@ -1,0 +1,36 @@
+{
+  "name": "beckelman.org",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.mjs",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:worker": "miniflare --kv CONTENT --kv-persist --build-command \"node ./build.js\" --watch --debug",
+    "dev:tailwind": "npx tailwindcss -c ./tailwind.config.cjs -i ./src/css/site.css -o .mf/kv/CONTENT/css/site.css --watch",
+    "build": "concurrently \"npm:build:*\"",
+    "build:tailwind": "npx tailwindcss -c ./tailwind.config.cjs -i ./src/css/site.css -o ./dist/site.css --minify",
+    "build:worker": "NODE_ENV=production node ./build.js"
+  },
+  "keywords": [],
+  "author": "Bill Beckelman <bill@beckelman.net>",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.0",
+    "concurrently": "^7.0.0",
+    "esbuild": "^0.14.12",
+    "miniflare": "^2.2.0",
+    "tailwindcss": "^3.0.15"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "rehype-raw": "^6.1.1",
+    "rehype-stringify": "^9.0.2",
+    "remark-frontmatter": "^4.0.1",
+    "remark-gfm": "^3.0.1",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "unified": "^10.1.1",
+    "unist-util-visit": "^4.1.0"
+  }
+}
