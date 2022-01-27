@@ -27,7 +27,7 @@ export default async ({ html, css, meta }) => {
               Flying
             </a>
 
-            <a href="/hiking" class="text-base font-medium text-white hover:text-blue-50">
+            <a href="/hikes" class="text-base font-medium text-white hover:text-blue-50">
               Hiking
             </a>
 
@@ -41,7 +41,7 @@ export default async ({ html, css, meta }) => {
   </header>
   <main class="container mx-auto p-4 md:p-0">
     <div class="prose prose-slate max-w-none lg:prose-lg">
-      ${(meta.title && `<h1 class="mb-0 lg:mb-0">${meta.title}</h1>`) || ""}
+      ${getTitle(meta)}
       ${getStatus(meta)}
       ${html}
     </div>
@@ -50,8 +50,25 @@ export default async ({ html, css, meta }) => {
 </html>`;
 };
 
+function getTitle(meta) {
+  if (!meta?.title) {
+    return "";
+  }
+  return `
+  <div class="flex justify-between w-full">
+    <h1 class="mb-0 lg:mb-0">${meta.title}</h1>
+    <div class="print:hidden">
+      <div class="cursor-pointer" onclick="window.print()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+        </svg>
+      </div>
+    </div>
+  </div>`;
+}
+
 function getStatus(meta) {
-  if (!meta.status) {
+  if (!meta?.status) {
     return "";
   }
   return `<div class="inline-flex items-center justify-center px-2 py-1 mr-2 bg-blue-500 rounded-full">

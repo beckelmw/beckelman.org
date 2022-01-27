@@ -3,7 +3,7 @@ import { fromBase64 } from "./encoding";
 function getUrl(request) {
   const path = new URL(request.url).pathname;
 
-  if (["/", "/code", "/flying", "/hiking", "/recipes"].includes(path)) {
+  if (["/", "/code", "/flying", "/hikes", "/recipes"].includes(path)) {
     return `${path.replace(/^\//, "")}/readme.md`;
   }
   return `${path}.md`;
