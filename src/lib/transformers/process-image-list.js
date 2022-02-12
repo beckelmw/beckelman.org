@@ -15,7 +15,7 @@ export default () => {
           });
         if (images.length) {
           file.data.hasGallery = true;
-          node.tagName = "wb-gallery";
+          node.tagName = "div";
           node.children = images;
         }
       }
