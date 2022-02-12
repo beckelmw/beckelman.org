@@ -46,6 +46,13 @@ export default async ({ html, css, meta }) => {
       ${html}
     </div>
   </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const res = await fetch(location.pathname, {headers: {Accept: 'application/geo+json'}});
+      const json = await res.json();
+      console.log(JSON.stringify(json));
+    }, false);
+  </script>
 </body>
 </html>`;
 };

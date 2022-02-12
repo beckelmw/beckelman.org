@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+mapbox-map {
+  --height: 500px;
+}

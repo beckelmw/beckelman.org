@@ -6,7 +6,7 @@ function getUrl(request) {
   if (["/", "/code", "/flying", "/hikes", "/recipes"].includes(path)) {
     return `${path.replace(/^\//, "")}/readme.md`;
   }
-  return `${path}.md`;
+  return /\.(.*){3,7}$/.test(path) ? path : `${path}.md`;
 }
 
 export default async (request, env) => {
@@ -14,7 +14,7 @@ export default async (request, env) => {
   const cache = env.CONTENT;
   const cacheKey = `github:${path.replace(/\//g, ":").toLowerCase()}`;
   const cachedItem = await cache.get(cacheKey, "json");
-  
+
   const headers = new Headers({
     authorization: `token ${env.GITHUB_TOKEN}`,
     accept: "application/vnd.github.v3+json",
@@ -25,9 +25,12 @@ export default async (request, env) => {
     headers.append("If-None-Match", cachedItem.etag);
   }
 
-  const res = await fetch(`https://api.github.com/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/contents${path}`, {
-    headers,
-  });
+  const res = await fetch(
+    `https://api.github.com/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/contents${path}`,
+    {
+      headers,
+    }
+  );
 
   if (res.status === 304) {
     return cachedItem?.content;
