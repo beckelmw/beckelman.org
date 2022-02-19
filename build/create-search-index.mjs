@@ -7,10 +7,8 @@ import remarkParse from "remark-parse";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkStringify from "remark-stringify";
-import { visit } from "unist-util-visit";
-import { load as yaml } from "js-yaml";
 import { remove } from "unist-util-remove";
-import frontmatter from "../src/lib/frontmatter.js";
+import frontmatter from "../src/lib/transformers/frontmatter.js";
 
 const files = await globby(
   resolve(homedir(), "projects/digital-garden/**/*.md")
@@ -43,7 +41,7 @@ for (const f of files) {
   result.push({
     title: meta.title,
     text: markdown,
-    id: meta.url,
+    url: meta.url,
   });
 }
 

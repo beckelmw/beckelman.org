@@ -6,7 +6,7 @@ export default () => {
     const url = file.data.meta.url;
     visit(
       ast,
-      (x) => x.tagName === "mapbox-map",
+      (x) => x.tagName === "wb-map",
       (node, idx, parent) => {
         file.data.hasMap = true;
         node.tagName = "wb-map";

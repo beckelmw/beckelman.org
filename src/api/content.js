@@ -12,7 +12,6 @@ export default async (req, env) => {
 
   switch (accept) {
     case GEOJSON:
-      console.log("requested geojson");
       return new Response(JSON.stringify({}), {
         headers: { "Content-Type": GEOJSON },
       });

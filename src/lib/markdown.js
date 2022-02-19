@@ -11,6 +11,7 @@ import processImageList from "./transformers/process-image-list";
 import mapbox from './transformers/mapbox';
 import mapboxLink from './transformers/mapbox-link';
 import galleryLink from './transformers/gallery-link';
+import removeExtensions from './transformers/remove-extensions';
 
 export default async (markdown) => {
   const { value: html, data } = await unified()
@@ -25,6 +26,7 @@ export default async (markdown) => {
     .use(galleryLink)
     .use(mapbox)
     .use(mapboxLink)
+    .use(removeExtensions)
     .use(rehypeStringify)
     .process(markdown);
 

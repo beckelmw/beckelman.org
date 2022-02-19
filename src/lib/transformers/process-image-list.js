@@ -14,8 +14,8 @@ export default () => {
         if (images.length) {
           file.data.hasGallery = true;
           node.tagName = "wb-gallery";
-          node.children = images;
           node.properties.replacements = "330width:public";
+          node.children = images;
         }
       }
     );
