@@ -1,13 +1,13 @@
-import { missing, ThrowableRouter } from "itty-router-extras";
+import { missing, ThrowableRouter, withParams } from "itty-router-extras";
 import favicon from "./api/favicon";
-import map from "./api/map";
+import javascript from "./api/javascript";
 import search from "./api/search";
 import content from "./api/content";
 import geojson from "./api/geojson";
 
 export const router = ThrowableRouter()
   .get("/favicon.png", favicon)
-  .get("/js/map.js", map)
+  .get("/js/:filename", withParams, javascript)
   .get("/search", search)
   .get("*.geojson", geojson)
   .get("*", content)

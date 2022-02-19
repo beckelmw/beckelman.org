@@ -7,16 +7,15 @@ export default () => {
       ast,
       (x) => x.tagName === "ul",
       (node) => {
-        const images = selectAll("element", node)
-          .filter((y) => y.tagName === "img")
-          .map((i) => {
-            i.properties.loading = "lazy";
-            return i;
-          });
+        const images = selectAll("element", node).filter(
+          (y) => y.tagName === "img"
+        );
+
         if (images.length) {
           file.data.hasGallery = true;
-          node.tagName = "div";
+          node.tagName = "wb-gallery";
           node.children = images;
+          node.properties.replacements = "330width:public";
         }
       }
     );

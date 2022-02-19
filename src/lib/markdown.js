@@ -10,6 +10,7 @@ import imageMeta from "./transformers/image-meta";
 import processImageList from "./transformers/process-image-list";
 import mapbox from './transformers/mapbox';
 import mapboxLink from './transformers/mapbox-link';
+import galleryLink from './transformers/gallery-link';
 
 export default async (markdown) => {
   const { value: html, data } = await unified()
@@ -21,6 +22,7 @@ export default async (markdown) => {
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw) // What allows raw html to work
     .use(processImageList)
+    .use(galleryLink)
     .use(mapbox)
     .use(mapboxLink)
     .use(rehypeStringify)

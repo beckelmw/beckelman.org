@@ -9,6 +9,7 @@ export default () => {
       (x) => x.tagName === "mapbox-map",
       (node, idx, parent) => {
         file.data.hasMap = true;
+        node.tagName = "wb-map";
         node.properties.accessToken = "3yQ7Mty4E4FBZlTVgzgo";
         node.properties.url = `${url}.geojson`;
       }
