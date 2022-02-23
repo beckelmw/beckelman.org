@@ -2,27 +2,18 @@ import { readFile } from "fs/promises";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkFrontmatter from "remark-frontmatter";
-import remarkGfm from "remark-gfm";
-import remarkStringify from "remark-stringify";
-import { remove } from "unist-util-remove";
 import frontmatter from "../src/lib/transformers/frontmatter.js";
+import remarkStringify from "remark-stringify";
 import getGardenFiles from "./lib/get-garden-files.js";
+import buildPointsGeojson from "./lib/build-points-geojson.js";
 
-const files = await getGardenFiles('**/*.md');
-
-const removeYaml = () => {
-  return (ast) => {
-    remove(ast, "yaml");
-  };
-};
+const files = await getGardenFiles("hikes/**/*.md");
 
 async function convert(content) {
   const { value: markdown, data } = await unified()
     .use(remarkParse)
     .use(remarkFrontmatter)
     .use(frontmatter)
-    .use(removeYaml)
-    .use(remarkGfm)
     .use(remarkStringify)
     .process(content);
 
@@ -32,13 +23,16 @@ async function convert(content) {
 const result = [];
 for (const f of files) {
   const content = await readFile(f);
-  const { markdown, meta } = await convert(content);
+  const { meta } = await convert(content);
 
   result.push({
-    title: meta.title,
-    text: markdown,
-    url: meta.url,
+    ...meta,
   });
 }
 
-console.log(JSON.stringify(result, null, 2));
+const geoJson = buildPointsGeojson(
+  result.filter((x) => x.latitude && x.longitude),
+  (d) => ({ ...d })
+);
+
+console.log(JSON.stringify(geoJson, null, 2));
