@@ -1,4 +1,4 @@
-export default async ({ html, css, meta }) => {
+export default async ({ html, manifest, meta }) => {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +6,8 @@ export default async ({ html, css, meta }) => {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${meta?.title || "Bill Beckelman"}</title>
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <style>${css || ""}</style>
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+  <link rel="stylesheet" href="/${manifest['css/site.css']}" />
   <base href="${meta?.baseUrl || "/"}">
 </head>
 <body>
@@ -17,7 +17,7 @@ export default async ({ html, css, meta }) => {
         <div class="flex items-center">
           <a href="/">
             <span class="sr-only">Bill Beckelman</span>
-            <img width="40px" class="h-10 w-auto" src="/favicon.png" alt="Bill Beckelman">
+            <img width="40px" class="h-10 w-auto" src="/img/favicon.png" alt="Bill Beckelman">
           </a>
           <div class="ml-4 space-x-4">
             <a href="/code" class="text-base font-medium text-white hover:text-blue-50">

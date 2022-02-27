@@ -1,11 +1,10 @@
 export default async (req, env) => {
   const filename = req.params.filename;
+  const img = await env.CONTENT.get(`img/${filename}`, "stream");
 
-  const js = await env.CONTENT.get(`js/${filename}`, "stream");
-
-  return new Response(js, {
+  return new Response(img, {
     headers: {
-      "Content-Type": "application/javascript",
+      "Content-Type": "image/png", // Naive
       "Cache-Control":
         env.MODE === "production" ? "max-age=31536000, immutable" : "no-cache",
     },
