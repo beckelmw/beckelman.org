@@ -1,38 +1,13 @@
-import { readFile } from "fs/promises";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkFrontmatter from "remark-frontmatter";
-import frontmatter from "../src/lib/transformers/frontmatter.js";
-import remarkStringify from "remark-stringify";
-import getGardenFiles from "./lib/get-garden-files.js";
+import "dotenv/config";
 import buildPointsGeojson from "./lib/build-points-geojson.js";
+import githubUpload from "./lib/github-upload.js";
+import getMetaByGlob from './lib/get-meta-by-glob.js';
 
-const files = await getGardenFiles("hikes/**/*.md");
-
-async function convert(content) {
-  const { value: markdown, data } = await unified()
-    .use(remarkParse)
-    .use(remarkFrontmatter)
-    .use(frontmatter)
-    .use(remarkStringify)
-    .process(content);
-
-  return { markdown, meta: data.meta };
-}
-
-const result = [];
-for (const f of files) {
-  const content = await readFile(f);
-  const { meta } = await convert(content);
-
-  result.push({
-    ...meta,
-  });
-}
+const hikesMeta = await getMetaByGlob("hikes/**/*.md");
 
 const geoJson = buildPointsGeojson(
-  result.filter((x) => x.latitude && x.longitude),
+  hikesMeta.filter((x) => x.latitude && x.longitude),
   (d) => ({ ...d })
 );
 
-console.log(JSON.stringify(geoJson, null, 2));
+await githubUpload("hikes/hikes.geojson", JSON.stringify(geoJson, null, 2));
