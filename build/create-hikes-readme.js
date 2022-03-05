@@ -6,14 +6,11 @@ import sortBy from "./lib/sort-by.js";
 import groupBy from "./lib/group-by.js";
 import pipe from "./lib/pipe.js";
 
-const hikesMeta = await getMetaByGlob("hikes/**/*.md");
-const sortByName = sortBy("Name");
-const sortByString = sortBy();
-const groupByLocation = groupBy("Location");
+const meta = await getMetaByGlob("hikes/**/*.md");
 
 const onlyHikes = (arr) => arr.filter((x) => x.latitude && x.longitude);
 
-const formatData = (arr) =>
+const mapData = (arr) =>
   arr.map(
     ({
       title,
@@ -39,16 +36,18 @@ const formatData = (arr) =>
     }
   );
 
-const sections = pipe(
-  onlyHikes,
-  formatData,
-  sortByName,
-  groupByLocation
-)(hikesMeta);
+const buildMarkdownTables = (sections) =>
+  Object.keys(sections)
+    .map((section) => `### ${section}\n\n${buildTable(sections[section])}`)
+    .join("\n\n");
 
-const areas = sortByString(Object.keys(sections))
-  .map((s) => `### ${s}\n\n${buildTable(sections[s])}`)
-  .join("\n\n");
+const tables = pipe(
+  onlyHikes,
+  mapData,
+  sortBy("Name"),
+  groupBy("Location"),
+  buildMarkdownTables
+)(meta);
 
 const md = `---
 title: Hiking
@@ -57,7 +56,7 @@ url: /hikes
 
 <wb-map url="/hikes/hikes.geojson"></wb-map>
 
-${areas}
+${tables}
 
 `;
 
