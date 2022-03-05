@@ -2,12 +2,19 @@ import "dotenv/config";
 import buildTable from "./lib/build-table.js";
 import getMetaByGlob from "./lib/get-meta-by-glob.js";
 import githubUpload from "./lib/github-upload.js";
+import sortBy from "./lib/sort-by.js";
+import groupBy from "./lib/group-by.js";
+import pipe from "./lib/pipe.js";
 
 const hikesMeta = await getMetaByGlob("hikes/**/*.md");
+const sortByName = sortBy("Name");
+const sortByString = sortBy();
+const groupByLocation = groupBy("Location");
 
-const rows = hikesMeta
-  .filter((x) => x.latitude && x.longitude)
-  .map(
+const onlyHikes = (arr) => arr.filter((x) => x.latitude && x.longitude);
+
+const formatData = (arr) =>
+  arr.map(
     ({
       title,
       url,
@@ -30,29 +37,17 @@ const rows = hikesMeta
         Dogs: dogs ? "Yes" : "No",
       };
     }
-  )
-  .sort((a, b) => {
-    if (a.Name > b.Name) return 1;
-    if (a.Name < b.Name) return -1;
-    return 0;
-  });
+  );
 
-const sections = rows.reduce((acc, cur) => {
-  acc[cur.Location] = acc[cur.Location] || [];
-  const { Location, ...rest } = cur;
-  acc[cur.Location].push(rest);
-  return acc;
-}, {});
+const sections = pipe(
+  onlyHikes,
+  formatData,
+  sortByName,
+  groupByLocation
+)(hikesMeta);
 
-const areas = Object.keys(sections)
-  .sort((a, b) => {
-    if (a < b) return -1;
-    if (a > b) return 1;
-    return 0;
-  })
-  .map((s) => {
-    return `### ${s}\n\n${buildTable(sections[s])}`;
-  })
+const areas = sortByString(Object.keys(sections))
+  .map((s) => `### ${s}\n\n${buildTable(sections[s])}`)
   .join("\n\n");
 
 const md = `---
