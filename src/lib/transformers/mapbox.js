@@ -14,6 +14,16 @@ export default () => {
         if (!node.properties.url) {
           node.properties.url = `${url}.geojson`;
         }
+
+        if (url === "/hikes") {
+          node.children = [
+            h("template", { slot: "popup" }, [
+              h("h2", [h("a", { href: "{url}" }, ["{title}"])]),
+              h("div", [h("strong", ["{type}"])]),
+              h("div", ["{distance} / {elevationGain}"]),
+            ]),
+          ];
+        }
       }
     );
   };

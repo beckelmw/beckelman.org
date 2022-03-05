@@ -8,9 +8,20 @@ const hikesMeta = await getMetaByGlob("hikes/**/*.md");
 const rows = hikesMeta
   .filter((x) => x.latitude && x.longitude)
   .map(
-    ({ title, url, type, difficulty, distance, elevationGain, fee, dogs }) => {
+    ({
+      title,
+      url,
+      location,
+      type,
+      difficulty,
+      distance,
+      elevationGain,
+      fee,
+      dogs,
+    }) => {
       return {
-        Name: `<a href="${url}.md">${title}</a>`,
+        Name: `[${title}](${url})`,
+        Location: location,
         Type: type,
         Difficulty: difficulty?.toUpperCase(),
         Distance: distance,
@@ -26,7 +37,23 @@ const rows = hikesMeta
     return 0;
   });
 
-const tbl = buildTable(rows);
+const sections = rows.reduce((acc, cur) => {
+  acc[cur.Location] = acc[cur.Location] || [];
+  const { Location, ...rest } = cur;
+  acc[cur.Location].push(rest);
+  return acc;
+}, {});
+
+const areas = Object.keys(sections)
+  .sort((a, b) => {
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+  })
+  .map((s) => {
+    return `### ${s}\n\n${buildTable(sections[s])}`;
+  })
+  .join("\n\n");
 
 const md = `---
 title: Hiking
@@ -35,7 +62,8 @@ url: /hikes
 
 <wb-map url="/hikes/hikes.geojson"></wb-map>
 
-${tbl}
+${areas}
+
 `;
 
 await githubUpload("hikes/readme.md", md);

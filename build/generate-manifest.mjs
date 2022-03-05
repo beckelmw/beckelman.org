@@ -48,14 +48,15 @@ for (const key of Object.keys(files)) {
   const file = files[key];
   const fileContents = await readFile(resolve(process.cwd(), file));
   const hash = await hasha.async(fileContents, { algorithm: "md5" });
-  const directory = dirname(key);
+  const directoryName = dirname(key);
   const filename = isProduction
-    ? `${directory}/${hash}-${basename(file)}`
-    : `${directory}/${basename(file)}`;
+    ? `${directoryName}/${hash}-${basename(file)}`
+    : `${directoryName}/${basename(file)}`;
 
   files[key] = filename;
 
   if (MODE !== "production") {
+    console.log(`${directory}/${filename}`);
     await mkdir(dirname(`${directory}/${filename}`), { recursive: true });
     await writeFile(`${directory}/${filename}`, fileContents);
   } else {
