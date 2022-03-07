@@ -20,8 +20,7 @@ const files = {
   "css/site.css": isProduction
     ? "dist/site.css"
     : ".mf/kv/CONTENT/css/site.css",
-  "js/gallery.js": "src/js/gallery.js",
-  "js/search-index.json": ".mf/kv/CONTENT/js/search-index.json",
+  "js/gallery.js": "src/js/gallery.js"
 };
 
 const directory = isProduction ? "dist" : ".mf/kv/CONTENT";
