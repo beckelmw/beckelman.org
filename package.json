@@ -10,7 +10,7 @@
     "dev:tailwind": "npx tailwindcss -c ./tailwind.config.cjs -i ./src/css/site.css -o .mf/kv/CONTENT/css/site.css --watch",
     "build": "concurrently \"npm:build:*\"",
     "build:tailwind": "npx tailwindcss -c ./tailwind.config.cjs -i ./src/css/site.css -o ./dist/site.css --minify",
-    "build:worker": "NODE_ENV=production node ./build.js",
+    "build:worker": "MODE=production node ./build.js",
     "publish": "wrangler publish",
     "postpublish": "MODE=production node ./build/generate-manifest.mjs"
   },
@@ -19,6 +19,7 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@cloudflare/wrangler": "^1.19.8",
+    "@tailwindcss/forms": "^0.5.0",
     "@tailwindcss/typography": "^0.5.0",
     "concurrently": "^7.0.0",
     "dotenv": "^16.0.0",
@@ -26,24 +27,12 @@
     "got": "^12.0.1",
     "hasha": "^5.2.2",
     "miniflare": "^2.3.0",
-    "tailwindcss": "^3.0.15"
+    "tailwindcss": "^3.0.15",
+    "tempura": "^0.4.0"
   },
   "dependencies": {
-    "hastscript": "^7.0.2",
     "itty-router": "^2.4.10",
     "itty-router-extras": "^0.4.2",
-    "js-yaml": "^4.1.0",
-    "minisearch": "^3.2.0",
-    "rehype-raw": "^6.1.1",
-    "rehype-stringify": "^9.0.2",
-    "remark-frontmatter": "^4.0.1",
-    "remark-gfm": "^3.0.1",
-    "remark-parse": "^10.0.1",
-    "remark-rehype": "^10.1.0",
-    "remark-stringify": "^10.0.2",
-    "unified": "^10.1.1",
-    "unist-util-remove": "^3.1.0",
-    "unist-util-select": "^4.0.1",
-    "unist-util-visit": "^4.1.0"
+    "minisearch": "^3.2.0"
   }
 }

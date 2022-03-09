@@ -1,5 +1,4 @@
 import MiniSearch from "minisearch";
-import getContent from "../lib/get-content.js";
 
 export default async (req, env) => {
   const url = new URL(req.url);
@@ -10,13 +9,7 @@ export default async (req, env) => {
     return { body: "q is a required search parameter", status: 400 };
   }
 
-  const content = await getContent(
-    {
-      url: "https://example.com/search.json",
-    },
-    env
-  );
-  const documents = JSON.parse(content);
+  const documents = await env.CONTENT.get('search.json', 'json')
 
   const miniSearch = new MiniSearch({
     idField: "url",

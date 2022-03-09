@@ -1,8 +1,12 @@
 {
     "cSpell.words": [
+        "esbuild",
         "hasha",
+        "hastscript",
+        "itty",
         "mapbox",
         "minisearch",
+        "outfile",
         "rehype"
     ]
 }
