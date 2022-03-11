@@ -17,10 +17,6 @@ esbuild.build({
   },
   outfile: "dist/index.mjs", // .mjs is important for Cloudflare
   plugins: [
-    tempura({
-      blocks: {
-        h1: () => "",
-      },
-    }),
+    tempura(),
   ],
 });

@@ -1,16 +1,17 @@
 import { missing } from "itty-router-extras";
-import getContent from "../lib/get-content";
 import hash from "../lib/hash";
 
 const GEOJSON = "application/geo+json";
 
 export default async (req, env) => {
-  const content = await getContent(req, env);
+  const url = new URL(req.url).pathname;
+  const allGeojson = await env.CONTENT.get("geojson.json", "json");
 
-  if (!content) {
+  if (!allGeojson || !allGeojson[url]) {
     return missing();
   }
 
+  const content = JSON.stringify(allGeojson[url]);
   const ifNoneMatch = req.headers.get("If-None-Match");
   const etag = await hash(content);
 

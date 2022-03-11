@@ -15,6 +15,7 @@ format = "modules"
 main = "index.mjs"
 
 [miniflare]
+watch = true
 build_watch_dirs = ["src", ".mf/kv/CONTENT/css"]
 live_reload = true
 kv_persist = true
