@@ -3,6 +3,7 @@ import start from "../templates/start.hbs";
 import header from "../templates/header.hbs";
 import body from "../templates/body.hbs";
 import end from "../templates/end.hbs";
+import webVitals from "../templates/web-vitals.hbs";
 
 export default async (req, env, ctx) => {
   const path = new URL(req.url).pathname;
@@ -23,6 +24,7 @@ export default async (req, env, ctx) => {
     writer.write(encoder.encode(start({ manifest, meta })));
     writer.write(encoder.encode(header({ meta })));
     writer.write(encoder.encode(body({ meta, html })));
+    writer.write(encoder.encode(webVitals()));
     writer.write(encoder.encode(end()));
     return writer.close();
   }

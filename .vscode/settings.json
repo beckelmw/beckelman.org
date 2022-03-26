@@ -5,8 +5,13 @@
         "hastscript",
         "itty",
         "mapbox",
+        "miniflare",
         "minisearch",
         "outfile",
-        "rehype"
+        "postpublish",
+        "rehype",
+        "SUPABASE",
+        "tailwindcss",
+        "uncreate"
     ]
 }
