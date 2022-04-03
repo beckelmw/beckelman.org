@@ -15,7 +15,7 @@ const {
 const isProduction = MODE === "production";
 
 const files = {
-  "img/favicon.png": "src/img/favicon.png",
+  "img/favicon.svg": "src/img/favicon.svg",
   "js/map.js": "src/js/map.js",
   "css/site.css": isProduction
     ? "dist/site.css"

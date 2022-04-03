@@ -9,7 +9,7 @@
     {{#if meta?.description}}
       <meta name="description" content="{{meta.description}}" />
     {{/if}}
-    <link rel="icon" type="image/png" href="/img/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/{{manifest['img/favicon.svg']}}" />
     <link rel="stylesheet" href="/{{manifest['css/site.css']}}" />
     <base href="{{meta?.baseUrl || "/"}}">
     {{#if meta?.hasCode}}

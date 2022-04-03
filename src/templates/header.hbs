@@ -1,3 +1,4 @@
+{{#expect meta, manifest}}
 <header class="bg-blue-600 mb-8 print:hidden">
   <nav class="mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
     <div
@@ -8,8 +9,9 @@
           <span class="sr-only">Bill Beckelman</span>
           <img
             width="40px"
+            height="40px"
             class="h-10 w-auto"
-            src="/img/favicon.png"
+            src="/{{manifest['img/favicon.svg']}}"
             alt="Bill Beckelman"
           />
         </a>

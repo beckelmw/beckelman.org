@@ -22,7 +22,7 @@ export default async (req, env, ctx) => {
 
   async function write() {
     writer.write(encoder.encode(start({ manifest, meta })));
-    writer.write(encoder.encode(header({ meta })));
+    writer.write(encoder.encode(header({ manifest, meta })));
     writer.write(encoder.encode(body({ meta, html })));
     writer.write(encoder.encode(webVitals()));
     writer.write(encoder.encode(end()));
