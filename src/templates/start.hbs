@@ -12,6 +12,9 @@
     <link rel="icon" type="image/png" href="/img/favicon.png" />
     <link rel="stylesheet" href="/{{manifest['css/site.css']}}" />
     <base href="{{meta?.baseUrl || "/"}}">
+    {{#if meta?.hasCode}}
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
+    {{/if}}
     {{#if meta?.hasMap}}
       <script type="module" src="/{{manifest['js/map.js']}}"></script>
     {{/if}}
