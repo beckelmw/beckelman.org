@@ -6,3 +6,16 @@ wb-map {
   height: 500px;
   --height: 500px;
 }
+
+figure.quote {
+  @apply bg-gray-100 p-4 rounded-sm;
+}
+
+figure.quote cite {
+  @apply text-right block;
+}
+
+figure.quote cite::before {
+  content: '—';
+  @apply pr-2
+}
