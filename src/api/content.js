@@ -1,9 +1,9 @@
 import { missing } from "itty-router-extras";
-import start from "../templates/start.hbs";
-import header from "../templates/header.hbs";
-import body from "../templates/body.hbs";
-import end from "../templates/end.hbs";
-import webVitals from "../templates/web-vitals.hbs";
+import { render } from "preact-render-to-string";
+import { Head } from "../templates/head";
+import { Navigation } from "../templates/navigation";
+import { Body } from "../templates/body";
+import { WebVitals } from "../templates/web-vitals";
 
 export default async (req, env, ctx) => {
   const path = new URL(req.url).pathname;
@@ -21,11 +21,13 @@ export default async (req, env, ctx) => {
   const { html, ...meta } = siteJson[path];
 
   async function write() {
-    writer.write(encoder.encode(start({ manifest, meta })));
-    writer.write(encoder.encode(header({ manifest, meta })));
-    writer.write(encoder.encode(body({ meta, html })));
-    writer.write(encoder.encode(webVitals()));
-    writer.write(encoder.encode(end()));
+    writer.write(encoder.encode(`<!DOCTYPE html><html lang="en">`));
+    writer.write(encoder.encode(render(Head({ manifest, meta }))));
+    writer.write(encoder.encode(`<body>`));
+    writer.write(encoder.encode(render(Navigation({ manifest, meta }))));
+    writer.write(encoder.encode(render(Body({ meta, content: html }))));
+    writer.write(encoder.encode(WebVitals()));
+    writer.write(encoder.encode(`</body></html>`));
     return writer.close();
   }
 

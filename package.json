@@ -27,14 +27,16 @@
     "got": "^12.0.1",
     "hasha": "^5.2.2",
     "miniflare": "^2.3.0",
-    "tailwindcss": "^3.0.15",
-    "tempura": "^0.4.0"
+    "tailwindcss": "^3.0.15"
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.31.2",
+    "htm": "^3.1.1",
     "itty-router": "^2.4.10",
     "itty-router-extras": "^0.4.2",
     "minisearch": "^3.2.0",
+    "preact": "^10.7.2",
+    "preact-render-to-string": "^5.2.0",
     "web-vitals": "^2.1.4"
   }
 }
