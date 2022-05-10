@@ -1,39 +1,47 @@
 import html from "../lib/html";
 
-export const Head = ({ meta, manifest }) => {
-  const links = [
-    meta.description &&
-      html`<meta name="description" content="${meta.description}" />`,
+const Description = ({ description }) => {
+  return (
+    !!description && html`<meta name="description" content="${description}" />`
+  );
+};
 
-    html`<link
-      rel="icon"
-      type="image/svg+xml"
-      href="/${manifest["img/favicon.svg"]}"
-    />`,
+const Favicon = ({ href }) => {
+  return (
+    !!href && html`<link rel="icon" type="image/svg+xml" href="${href}" />`
+  );
+};
 
-    html`<link rel="stylesheet" href="/${manifest["css/site.css"]}" />`,
-    html`<base href="${meta.baseUrl || "/"}" />`,
+const CSS = ({ include = true, href }) => {
+  return include && html`<link rel="stylesheet" href="${href}" />`;
+};
 
-    meta.hasCode &&
-      html`<link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/github-dark-dimmed.min.css"
-      />`,
+const Base = ({ url }) => {
+  return html`<base href="${url || "/"}" />`;
+};
 
-    meta.hasMap &&
-      html`<script type="module" src="/${manifest["js/map.js"]}"></script>`,
+const Script = ({ include = true, src }) => {
+  return include && html`<script type="module" src="/${src}"></script>`;
+};
 
-    meta.hasImages &&
-      html`<script type="module" src="/${manifest["js/gallery.js"]}"></script>`,
-  ].filter((x) => !!x);
-
+export const Head = ({ meta, manifest, children }) => {
   return html`
     <head>
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>${meta?.title || "Bill Beckelman"}</title>
-      ${links.map((l) => html`${l}`)}
+      <title>${meta.title || "Bill Beckelman"}</title>
+      <${Description} description=${meta.description} />
+      <${Base} url=${meta.baseUrl} />
+      <${Favicon} href="/${manifest["img/favicon.svg"]}" />
+      <${CSS} href="/${manifest["css/site.css"]}" />
+      <${CSS}
+        include=${!!meta.hasCode}
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/github-dark-dimmed.min.css"
+      />
+      <${Script} include=${!!meta.hasMap} src=${manifest["js/map.js"]} />
+      <${Script} include=${!!meta.hasImages} src=${manifest["js/gallery.js"]} />
+      ${children}
     </head>
   `;
 };
