@@ -34,9 +34,16 @@ export default async (req, env, ctx) => {
 
   const headers = { "Content-Type": "text/html;charset=utf8" };
 
-  if (meta.hasMap) {
-    headers["link"] =
-      '<https://api.maptiler.com>; rel="preconnect", <https://cdnjs.cloudflare.com>; rel="preconnect"';
+  const preconnectDomains = [
+    !!meta.hasImages && `https://imagedelivery.net`,
+    !!meta.hasMap && `https://api.maptiler.com`,
+    !!meta.hasMap && `https://cdnjs.cloudflare.com`,
+  ].filter((x) => !!x);
+
+  if (preconnectDomains.length > 0) {
+    headers["link"] = preconnectDomains
+      .map((domain) => `<${domain}>; rel="preconnect"`)
+      .join(", ");
   }
 
   return new Response(readable, {
