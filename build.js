@@ -1,5 +1,4 @@
 import * as esbuild from "esbuild";
-import { transform as tempura } from "tempura/esbuild";
 
 const mode = process.env.MODE?.toLowerCase() ?? "development";
 
@@ -16,7 +15,4 @@ esbuild.build({
     "process.env.NODE_ENV": `"${mode}"`,
   },
   outfile: "dist/index.mjs", // .mjs is important for Cloudflare
-  plugins: [
-    tempura(),
-  ],
 });
