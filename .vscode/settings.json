@@ -8,9 +8,13 @@
         "miniflare",
         "minisearch",
         "outfile",
+        "postbuild",
+        "postdeploy",
+        "postdev",
         "postpublish",
+        "predeploy",
+        "predev",
         "rehype",
-        "SUPABASE",
         "tailwindcss",
         "uncreate"
     ]

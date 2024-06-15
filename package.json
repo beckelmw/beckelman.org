@@ -2,41 +2,35 @@
   "name": "beckelman.org",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.mjs",
+  "main": "src/index.mjs",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm:dev:*\"",
-    "dev:worker": "miniflare",
-    "dev:tailwind": "npx tailwindcss -c ./tailwind.config.cjs -i ./src/css/site.css -o .mf/kv/CONTENT/css/site.css --watch",
-    "build": "concurrently \"npm:build:*\"",
-    "build:tailwind": "npx tailwindcss -c ./tailwind.config.cjs -i ./src/css/site.css -o ./dist/site.css --minify",
-    "build:worker": "MODE=production node ./build.js",
-    "publish": "wrangler publish",
-    "postpublish": "MODE=production node ./build/generate-manifest.mjs"
+    "dev:worker": "wrangler dev --remote",
+    "dev:tailwind": "npx tailwindcss -c ./tailwind.config.cjs -i ./src/css/site.css -o ./dist/site.css --watch",
+    "predev": "MODE=development node --env-file .dev.vars ./build/generate-manifest.mjs",
+    "predeploy": "npx tailwindcss -c ./tailwind.config.cjs --minify -i ./src/css/site.css -o ./dist/site.css",
+    "deploy": "wrangler deploy",
+    "postdeploy": "MODE=production node --env-file .dev.vars ./build/generate-manifest.mjs"
   },
   "keywords": [],
   "author": "Bill Beckelman <bill@beckelman.net>",
   "license": "UNLICENSED",
   "devDependencies": {
-    "@cloudflare/wrangler": "^1.19.8",
-    "@tailwindcss/forms": "^0.5.0",
-    "@tailwindcss/typography": "^0.5.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.13",
     "concurrently": "^7.0.0",
-    "dotenv": "^16.0.0",
-    "esbuild": "^0.14.12",
-    "got": "^12.0.1",
-    "hasha": "^5.2.2",
-    "miniflare": "^2.3.0",
-    "tailwindcss": "^3.0.15"
+    "got": "^14.4.1",
+    "hasha": "^6.0.0",
+    "tailwindcss": "^3.4.4"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^1.31.2",
     "htm": "^3.1.1",
     "itty-router": "^2.4.10",
     "itty-router-extras": "^0.4.2",
     "minisearch": "^3.2.0",
-    "preact": "^10.7.2",
-    "preact-render-to-string": "^5.2.0",
-    "web-vitals": "^2.1.4"
+    "preact": "^10.22.0",
+    "preact-render-to-string": "^6.5.5",
+    "wrangler": "^3.60.3"
   }
 }

@@ -1,5 +1,4 @@
-import "dotenv/config";
-import { readFile, writeFile, mkdir } from "fs/promises";
+import { readFile } from "fs/promises";
 import { resolve, basename, dirname } from "path";
 import hasha from "hasha";
 import got from "got";
@@ -9,27 +8,27 @@ const {
   CLOUDFLARE_API_URL,
   CLOUDFLARE_ACCOUNT_ID,
   CONTENT_KV_ID,
+  CONTENT_KV_ID_PREVIEW,
   CLOUDFLARE_API_KEY,
 } = process.env;
 
 const isProduction = MODE === "production";
 
+console.log(isProduction ? "Production build" : "Development build");
+
 const files = {
   "img/favicon.svg": "src/img/favicon.svg",
   "js/map.js": "src/js/map.js",
-  "css/site.css": isProduction
-    ? "dist/site.css"
-    : ".mf/kv/CONTENT/css/site.css",
-  "js/gallery.js": "src/js/gallery.js"
+  "css/site.css": "dist/site.css",
+  "js/gallery.js": "src/js/gallery.js",
 };
-
-const directory = isProduction ? "dist" : ".mf/kv/CONTENT";
 
 const kvPut = (keyName, opts) => {
   console.log(`Uploading ${keyName}`);
+  const namespace = isProduction ? CONTENT_KV_ID : CONTENT_KV_ID_PREVIEW;
   try {
     return got.put(
-      `${CLOUDFLARE_API_URL}accounts/${CLOUDFLARE_ACCOUNT_ID}/storage/kv/namespaces/${CONTENT_KV_ID}/values/${keyName}`,
+      `${CLOUDFLARE_API_URL}accounts/${CLOUDFLARE_ACCOUNT_ID}/storage/kv/namespaces/${namespace}/values/${keyName}`,
       {
         headers: {
           Authorization: `Bearer ${CLOUDFLARE_API_KEY}`,
@@ -54,20 +53,10 @@ for (const key of Object.keys(files)) {
 
   files[key] = filename;
 
-  if (MODE !== "production") {
-    console.log(`${directory}/${filename}`);
-    await mkdir(dirname(`${directory}/${filename}`), { recursive: true });
-    await writeFile(`${directory}/${filename}`, fileContents);
-  } else {
-    await kvPut(`${filename}`, {
-      body: fileContents,
-    });
-  }
+  await kvPut(`${filename}`, {
+    body: fileContents,
+  });
 }
 
 const manifest = JSON.stringify(files, null, 2);
-if (MODE !== "production") {
-  await writeFile(`${directory}/manifest.json`, manifest);
-} else {
-  await kvPut("manifest.json", { body: manifest });
-}
+await kvPut("manifest.json", { body: manifest });

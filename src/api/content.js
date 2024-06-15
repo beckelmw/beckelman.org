@@ -3,9 +3,9 @@ import { render } from "preact-render-to-string";
 import { Head } from "../templates/head";
 import { Navigation } from "../templates/navigation";
 import { Body } from "../templates/body";
-import { WebVitals } from "../templates/web-vitals";
 
 export default async (req, env, ctx) => {
+  console.log(env);
   const path = new URL(req.url).pathname;
   const manifest = await env.CONTENT.get("manifest.json", "json");
   const siteJson = await env.CONTENT.get("site.json", "json");
@@ -25,7 +25,6 @@ export default async (req, env, ctx) => {
     writer.write(encoder.encode(`<body>`));
     writer.write(encoder.encode(render(Navigation({ manifest, meta }))));
     writer.write(encoder.encode(render(Body({ meta, content }))));
-    writer.write(encoder.encode(WebVitals()));
     writer.write(encoder.encode(`</body></html>`));
     return writer.close();
   }
